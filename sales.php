@@ -20,7 +20,7 @@
         $eid = $_POST['eid'];
         $pid = $_POST['pid'];
         $sellerid = $_POST['sellerid'];
-        $productid = $_POST['productid'];
+        $productid = $_POST['productid'];       
         $customer = $_POST['customer'];
         $phone = $_POST['phone'];
         $bprice = $_POST['bprice'];
@@ -29,9 +29,10 @@
         $paid = $_POST['paid'];
         $method = $_POST['method'];
         $quantity = $_POST['quantity'];
+        $date = $_POST['date'];
         $due = $_POST['due'];
-        $insert = "INSERT INTO $table(saleid,sid,iid,eid,pid,sellerid,productid,customer,phone,bprice,sprice,amount,paid,method,quantity,due,checked) 
-        VALUES ('".$saleid."','".$sid."','".$iid."','".$eid."','".$pid."','".$sellerid."','".$productid."','".$customer."','".$phone."','".$bprice."','".$sprice."','".$amount."','".$paid."','".$method."','".$quantity."','".$due."','true')";
+        $insert = "INSERT INTO $table(saleid,sid,iid,eid,pid,sellerid,productid,customer,phone,bprice,sprice,amount,paid,method,quantity,date,due,checked) 
+        VALUES ('".$saleid."','".$sid."','".$iid."','".$eid."','".$pid."','".$sellerid."','".$productid."','".$customer."','".$phone."','".$bprice."','".$sprice."','".$amount."','".$paid."','".$method."','".$quantity."','".$date."','".$due."','true')";
         $query = mysqli_query($db,$insert);
         if($query){
             echo 'Success';
@@ -73,6 +74,20 @@
         }
         $saleid = $_POST['saleid'];
         $query = "SELECT * FROM $table WHERE saleid = '".$saleid."'";
+        $result = $db->query($query);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    }
+
+    if('GET_BY_SID' == $action){
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $sid = $_POST['sid'];
+        $query = "SELECT * FROM $table WHERE sid = '".$sid."'";
         $result = $db->query($query);
         $data = [];
         while ($row = $result->fetch_assoc()) {
@@ -302,12 +317,44 @@
         $paid = $_POST['paid'];
         $method = $_POST['method'];
         $due = $_POST['due'];
-        $time = $_POST['time'];
-        $sql = "UPDATE $table SET customer = '$customer', phone = '$phone', amount = '$amount', paid = '$paid', method = '$method', due = '$due', time = '$time' WHERE saleid = '$saleid'";
+        $date = $_POST['date'];
+        
+        $sql = "UPDATE $table SET customer = '$customer', phone = '$phone', amount = '$amount', paid = '$paid', method = '$method', due = '$due', date = '$date' WHERE saleid = '$saleid'";
         if ($conn->query($sql) === TRUE) { 
             echo "success";
         } else {
             echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
+    if('UPDATE' == $action){
+        $sid = $_POST['sid'];
+        $customer = $_POST['customer'];
+        $phone = $_POST['phone'];
+        $amount = $_POST['amount'];
+        $paid = $_POST['paid'];
+        $method = $_POST['method'];
+        $due = $_POST['due'];
+        $date = $_POST['date'];
+        $quantity = $_POST['quantity'];
+        $bprice = $_POST['bprice'];
+        $sprice = $_POST['sprice'];
+    
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE sid = '$sid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "UPDATE $table SET customer = '$customer', phone = '$phone', amount = '$amount', paid = '$paid', quantity = '$quantity', bprice = '$bprice', sprice = '$sprice', method = '$method', due = '$due', date = '$date' WHERE sid = '$sid'";
+            if ($conn->query($sql) === TRUE) { 
+                echo "success";
+            } else {
+                echo "failed";
+            }
         }
         $conn->close();
         return;
@@ -338,6 +385,62 @@
         } else {
             echo "failed";
         }
+        $conn->close();
+        return;
+    }
+
+    if('DELETE_EID' == $action){
+        $eid = $_POST['eid'];
+        $sql = "DELETE FROM $table WHERE eid = '$eid'";
+        if ($conn->query($sql) === TRUE) {
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
+    if('DELETE_SALEID' == $action){
+        $saleid = $_POST['saleid'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE saleid = '$saleid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "DELETE FROM $table WHERE saleid = '$saleid'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+
+        $conn->close();
+        return;
+    }
+
+    if('DELETE_SID' == $action){
+        $sid = $_POST['sid'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE sid = '$sid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "DELETE FROM $table WHERE sid = '$sid'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+
         $conn->close();
         return;
     }

@@ -18,7 +18,7 @@
         $eid = $_POST['eid'];
         $pid = $_POST['pid'];
         $payerid = $_POST['payerid'];
-        $adminid = $_POST['adminid'];
+        $admin = $_POST['admin'];
         $saleid = $_POST['saleid'];
         $purchaseid = $_POST['purchaseid'];
         $items = $_POST['items'];
@@ -27,8 +27,8 @@
         $type = $_POST['type'];
         $method = $_POST['method'];
         $time = $_POST['time'];
-        $insert = "INSERT INTO $table(payid,eid,pid,payerid,adminid,saleid,purchaseid,items,amount,paid,type,method,time) 
-        VALUES ('".$payid."','".$eid."','".$pid."','".$payerid."','".$adminid."','".$saleid."','".$purchaseid."','".$items."','".$amount."','".$paid."','".$type."','".$method."','".$time."')";
+        $insert = "INSERT INTO $table(payid,eid,pid,payerid,admin,saleid,purchaseid,items,amount,paid,type,method,checked,time) 
+        VALUES ('".$payid."','".$eid."','".$pid."','".$payerid."','".$admin."','".$saleid."','".$purchaseid."','".$items."','".$amount."','".$paid."','".$type."','".$method."','true','".$time."')";
         $query = mysqli_query($db,$insert);
         if($query){
             echo 'Success';
@@ -66,6 +66,21 @@
         echo json_encode($data);
     }
     
+
+    if('GET_MY' == $action){
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $pid = $_POST['pid'];
+        $query = "SELECT * FROM $table WHERE FIND_IN_SET('" . $pid . "', pid)";
+        $result = $db->query($query);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    }
+
     if ('GET_CURRENT' == $action) {
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
@@ -136,9 +151,24 @@
     if('UPDATE_PURCHASE_AMOUNT' == $action){
         $purchaseid = $_POST['purchaseid'];
         $amount = $_POST['amount'];
-        $paid = $_POST['paid'];
+        $type = $_POST['type'];
         $items = $_POST['items'];
-        $sql = "UPDATE $table SET amount = '$amount', paid = '$paid', items = '$items' WHERE purchaseid = '$purchaseid'";
+        $sql = "UPDATE $table SET amount = '$amount', items = '$items', type = '$type' WHERE purchaseid = '$purchaseid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
+    if('UPDATE_PURCHASE_PAID' == $action){
+        $purchaseid = $_POST['purchaseid'];
+        $paid = $_POST['paid'];
+        $type = $_POST['type'];
+        $method = $_POST['method'];
+        $sql = "UPDATE $table SET paid = '$paid', type = '$type', method = '$method' WHERE purchaseid = '$purchaseid'";
         if ($conn->query($sql) === TRUE) { 
             echo "success";
         } else {
@@ -151,10 +181,61 @@
     if('UPDATE_SALE_AMOUNT' == $action){
         $saleid = $_POST['saleid'];
         $amount = $_POST['amount'];
-        $paid = $_POST['paid'];
+        $type = $_POST['type'];
         $items = $_POST['items'];
-        $sql = "UPDATE $table SET amount = '$amount', paid = '$paid', items = '$items' WHERE saleid = '$saleid'";
+        $sql = "UPDATE $table SET amount = '$amount', items = '$items', type = '$type' WHERE saleid = '$saleid'";
         if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
+    if('UPDATE_SALE_PAID' == $action){
+        $saleid = $_POST['saleid'];
+        $paid = $_POST['paid'];
+        $type = $_POST['type'];
+        $method = $_POST['method'];
+        $sql = "UPDATE $table SET paid = '$paid', type = '$type', method = '$method' WHERE saleid = '$saleid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
+    if('DELETE_EID' == $action){
+        $eid = $_POST['eid'];
+        $sql = "DELETE FROM $table WHERE eid = '$eid'";
+        if ($conn->query($sql) === TRUE) {
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
+    if('DELETE_SALEID' == $action){
+        $saleid = $_POST['saleid'];
+        $sql = "DELETE FROM $table WHERE saleid = '$saleid'";
+        if ($conn->query($sql) === TRUE) {
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
+    if('DELETE_PRCHID' == $action){
+        $purchaseid = $_POST['purchaseid'];
+        $sql = "DELETE FROM $table WHERE purchaseid = '$purchaseid'";
+        if ($conn->query($sql) === TRUE) {
             echo "success";
         } else {
             echo "failed";

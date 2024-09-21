@@ -23,13 +23,13 @@ io.on("connection", (socket) => {
 
     socket.on("signin", (id) => {
         console.log(`User ${id} has signed in`);
-        clients[id] = socket;
+        clients[id] = socket; // CHECK IF SIGNING IN WITH DIRRENT DEVICES WITH THE SAME ID WILL AND THE SAME IT MORE THAN ONCE
         console.log("Connected clients:", clients);
     });
 
     socket.on("signout", (id) => {
         console.log(`User ${id} has signed out`);
-        delete clients[id];
+        delete clients[id];  // PROPRLY REMOVE CLIENT
         console.log("Connected clients:", clients);
     });
     
@@ -45,7 +45,6 @@ io.on("connection", (socket) => {
         if (clients[targetId]) {
             clients[targetId].emit("message", msg);
             console.log(`Sent message to user ${targetId}`);
-            
         } else {
             console.log(`User ${targetId} not found`);
         }
@@ -55,15 +54,15 @@ io.on("connection", (socket) => {
             headings: {en: username,},
             included_segments: ["Subscribed Users"],
             buttons: [
-                { id: "1", text: "Reply", action: { url: `Zelli://message?userId=${targetId}` } },
+                { id: "1", text: "Reply", action: { url: `Tally://message?userId=${targetId}` } },
                 { id: "2", text: "Ignore",},
             ],
             include_player_ids: recipientToken,
             content_available: true,
             small_icon: "ic_app_log",
             groupSummaryIcon: "ic_app_log",
-            large_icon: profile,
-            big_picture: image,
+            large_icon: "https://static.wikia.nocookie.net/boondocks/images/a/ac/Cindy_wide_eyes.jpg/revision/latest?cb=20120718190104",
+            // big_picture: "https://10.17.9.72/Tally/profile/riley.jpg",
             data: {
                 PushTitle: "STUDIO5IVE",
                 group: "123456",
@@ -81,8 +80,6 @@ io.on("connection", (socket) => {
             
         });
     });
-
-
 
     socket.on("group", (msg) => {
     console.log("Received group message:", msg);
@@ -109,7 +106,7 @@ io.on("connection", (socket) => {
             headings: {en: title,},
             included_segments: ["Grouped Users"],
             buttons: [
-                { id: "1", text: "Reply", action: { url: `Zelli://message?userId=123` } },
+                { id: "1", text: "Reply", action: { url: `Tally://message?userId=123` } },
                 { id: "2", text: "Ignore",},
             ],
             include_player_ids: recipientToken,
@@ -134,7 +131,6 @@ io.on("connection", (socket) => {
         });
     });
     
-
     socket.on("notif", (msg)=>{
         console.log(msg);
         let targetIds = msg.pid || [];
@@ -161,7 +157,7 @@ io.on("connection", (socket) => {
             content_available: true,
             small_icon: "ic_app_log",
             groupSummaryIcon: "ic_app_log",
-            large_icon: profile,
+           
            
             data: {
                 PushTitle: "STUDIO5IVE",
@@ -181,14 +177,30 @@ io.on("connection", (socket) => {
         });
     });
 
+    socket.on("cancel-notification", (msg) => {
+        console.log("Cancel notification request received:", msg);
+        let notificationId = msg.mid;
+
+        pushNotificationService.CancelNotification(notificationId, (error, results) => {
+
+            if (error) {
+                console.log(`Error canceling notification: ${error.message}, ${msg.mid}`);
+            } else {
+                console.log(`Notification canceled successfully`, results);
+             
+                socket.emit("notification-canceled", { mid: notificationId, status: "success" });
+            }
+        });
+    });
+
     socket.on("disconnect", (_) => {
         console.log("Disconnected. Reconnecting :", new Date().toLocaleTimeString().substring(0, 5));
-        // Implement your reconnection logic here
+        
     });
 
     socket.on("connect_error", (err) => {
         console.log("Connection error: ", err);
-        // Implement detailed logging or error handling here
+
     });
 
     console.log(`${socket.connected}: ${new Date().toLocaleTimeString().substring(0, 5)}`);
@@ -198,6 +210,6 @@ app.route("/check").get((req, res) => {
     return res.json("Your app is working fine");
 });
 
-server.listen(port, "192.168.0.105", () => {
+server.listen(port, "0.0.0.0", () => {
     console.log("server started");
 });

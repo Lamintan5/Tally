@@ -18,6 +18,7 @@
         $eid = $_POST['eid'];
         $pid = $_POST['pid'];
         $duties = $_POST['duties'];
+        $checked = $_POST['checked'];
 
         $sql = "SELECT eid, pid FROM $table WHERE BINARY eid = '".$eid."' AND pid = '".$pid."'";
         $result = mysqli_query($db,$sql);
@@ -26,8 +27,8 @@
         if($count == 1){
             echo 'Exists';
         } else {
-            $insert = "INSERT INTO $table(did,eid,pid,duties) 
-            VALUES ('".$did."','".$eid."','".$pid."','".$duties."')";
+            $insert = "INSERT INTO $table(did,eid,pid,duties,checked) 
+            VALUES ('".$did."','".$eid."','".$pid."','".$duties."','true')";
             $query = mysqli_query($db,$insert);
             if($query){
                 echo 'Success';
@@ -79,7 +80,17 @@
         return;
     }
 
-   
+    if('DELETE_EID' == $action){
+        $eid = $_POST['eid'];
+        $sql = "DELETE FROM $table WHERE eid = '$eid'";
+        if ($conn->query($sql) === TRUE) {
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
 
     if('DELETE' == $action){
         $did = $_POST['did'];

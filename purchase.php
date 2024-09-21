@@ -19,19 +19,30 @@
         $prcid = $_POST['prcid'];
         $eid = $_POST['eid'];
         $pid = $_POST['pid'];
+        $purchaser = $_POST['purchaser'];
         $bprice = $_POST['bprice'];
         $amount = $_POST['amount'];
         $paid = $_POST['paid'];
         $quantity = $_POST['quantity'];
         $type = $_POST['type'];
+        $date = $_POST['date'];
         $due = $_POST['due'];
-        $insert = "INSERT INTO $table(purchaseid,productid,prcid,eid,pid,bprice,amount,paid,quantity,type,due,checked) 
-        VALUES ('".$purchaseid."','".$productid."','".$prcid."','".$eid."','".$pid."','".$bprice."','".$amount."','".$paid."','".$quantity."','".$type."','".$due."','true')";
-        $query = mysqli_query($db,$insert);
-        if($query){
-            echo 'Success';
-        } else {
-            echo 'Failed';
+
+        $sql = "SELECT prcid FROM $table WHERE  prcid = '".$prcid."'";
+        $result = mysqli_query($db,$sql);
+        $count = mysqli_num_rows($result);
+
+        if($count == 1){
+            echo 'Exists';
+        }else {
+            $insert = "INSERT INTO $table(purchaseid,productid,prcid,eid,pid,purchaser,bprice,amount,paid,quantity,type,date,due,checked) 
+            VALUES ('".$purchaseid."','".$productid."','".$prcid."','".$eid."','".$pid."','".$purchaser."','".$bprice."','".$amount."','".$paid."','".$quantity."','".$type."','".$date."','".$due."','true')";
+            $query = mysqli_query($db,$insert);
+            if($query){
+                echo 'Success';
+            } else {
+                echo 'Failed';
+            }
         }
     }
 
@@ -84,6 +95,20 @@
         $purchaseid = $_POST['purchaseid'];
         $productid = $_POST['productid'];
         $query = "SELECT * FROM $table WHERE purchaseid = '".$purchaseid."' AND productid = '".$productid."'";
+        $result = $db->query($query);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    }
+
+    if('GET_BY_PRCID' == $action){
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $prcid = $_POST['prcid'];
+        $query = "SELECT * FROM $table WHERE prcid = '".$prcid."'";
         $result = $db->query($query);
         $data = [];
         while ($row = $result->fetch_assoc()) {
@@ -202,6 +227,33 @@
         }
         echo json_encode($data);
     }
+    if('UPDATE' == $action){
+        $prcid = $_POST['prcid'];
+        $bprice = $_POST['bprice'];
+        $amount = $_POST['amount'];
+        $paid = $_POST['paid'];
+        $quantity = $_POST['quantity'];
+        $type = $_POST['type'];
+        $date = $_POST['date'];
+        $due = $_POST['due'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE prcid = '$prcid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "UPDATE $table SET  bprice = '$bprice', amount = '$amount', paid = '$paid', quantity = '$quantity',  type = '$type', date = '$date', due = '$due' WHERE prcid = '$prcid'";
+            if ($conn->query($sql) === TRUE) { 
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+        $conn->close();
+        return;
+    }
 
     if('UPDATE_ONE_QUANTITY' == $action){
         $prcid = $_POST['prcid'];
@@ -222,12 +274,21 @@
         $paid = $_POST['paid'];
         $due = $_POST['due'];
         $type = $_POST['type'];
-        $time = $_POST['time'];
-        $sql = "UPDATE $table SET amount = '$amount', paid = '$paid', due = '$due', type = '$type', time = '$time'  WHERE purchaseid = '$purchaseid'";
-        if ($conn->query($sql) === TRUE) { 
-            echo "success";
+        $date = $_POST['date'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE purchaseid = '$purchaseid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
         } else {
-            echo "failed";
+            $sql = "UPDATE $table SET amount = '$amount', paid = '$paid', due = '$due', type = '$type', date = '$date'  WHERE purchaseid = '$purchaseid'";
+            if ($conn->query($sql) === TRUE) { 
+                echo "success";
+            } else {
+                echo "failed";
+            }
         }
         $conn->close();
         return;
@@ -274,6 +335,62 @@
         return;
     }
 
+    if('DELETE_PRCHID' == $action){
+        $purchaseid = $_POST['purchaseid'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE purchaseid = '$purchaseid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "DELETE FROM $table WHERE purchaseid = '$purchaseid'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+
+        $conn->close();
+        return;
+    }
+
+    if('DELETE_PRCID' == $action){
+        $prcid = $_POST['prcid'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE prcid = '$prcid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "DELETE FROM $table WHERE prcid = '$prcid'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+
+        $conn->close();
+        return;
+    }
+
+    if('DELETE_EID' == $action){
+        $eid = $_POST['eid'];
+        $sql = "DELETE FROM $table WHERE eid = '$eid'";
+        if ($conn->query($sql) === TRUE) {
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('DELETE' == $action){
         $purchaseid = $_POST['purchaseid'];
         $productid = $_POST['productid'];
@@ -286,6 +403,4 @@
         $conn->close();
         return;
     }
-
-
 ?>
