@@ -16,7 +16,6 @@ async function sendEmail(params, callback){
         subject: params.subject,
         text: params.body,
         html: params.html,
-        
     };
 
     transport.sendMail(mailOptions, function (error, info){
