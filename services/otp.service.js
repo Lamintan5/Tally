@@ -13,7 +13,7 @@ async function sendOTP(params, callback){
     );
 
     const ttl = 5 * 60 * 1000;
-    const  expires = Date.now() + ttl;
+    const expires = Date.now() + ttl;
     const data = `${params.email}.${otp}.${expires}`;
     const hash = crypto.createHmac("sha256", key).update(data).digest("hex");
     const fullHash = `${hash}.${expires}`;
@@ -156,7 +156,7 @@ async function sendOTP(params, callback){
                 </div>
                 <p>Dear Customer,</p>
                 <br>
-                <p>Thank you for choosing Studio5ive Company. Use the following OTP to complete the procedure to create your account. The OTP is valid for <strong>5 minutes.</strong> Please do not share this code with anyone, including Studio5ive employees.</p>
+                <p>Thank you for choosing Studio5ive. To complete your request to [create your account/change your password], please use the OTP provided below. The OTP is valid for <strong>5 minutes.</strong> Please do not share this code with anyone, including Studio5ive employees.</p>
                 <div class="otp-container">
                     <p class="otp-code">${otp}</p>
                 </div>
