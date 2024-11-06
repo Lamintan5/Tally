@@ -19,6 +19,7 @@
         $admin = $_POST['admin'];
         $title = $_POST['title'];
         $category = $_POST['category'];
+        $location = $_POST['location'];
 
         $sql = "SELECT eid FROM $table WHERE BINARY eid = '".$eid."'";
         $result = mysqli_query($db,$sql);
@@ -35,7 +36,8 @@
             } else {
                 $image = $_POST['image']; 
             }
-            $insert = "INSERT INTO $table(eid,pid,admin,title,category,image,checked) VALUES ('".$eid."','".$pid."','".$admin."','".$title."','".$category."','".$image."','true')";
+            $insert = "INSERT INTO $table(eid,pid,admin,title,category,location,image,checked) 
+            VALUES ('".$eid."','".$pid."','".$admin."','".$title."','".$category."','".$location."','".$image."','true')";
             $query = mysqli_query($db,$insert);
             if($query){
                 echo 'Success';
