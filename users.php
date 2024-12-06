@@ -10,6 +10,55 @@
     $conn = new mysqli($servername, $username, $password, $dbname);
 
    
+    if('UPDATE_PROFILE' == $action){
+        $image = $_FILES['image']['name'];
+        $uid = $_POST['uid'];
+        $username = $_POST['username'];
+        $first = $_POST['first'];
+        $last = $_POST['last'];
+
+        $sqlCheckUsername = "SELECT username FROM $table WHERE uid = '$uid'";
+        $resultCheckUsername = mysqli_query($db, $sqlCheckUsername);
+        $row = mysqli_fetch_assoc($resultCheckUsername);
+        
+        if ($row['username'] !== $username) {
+            $sqlCheckExistence = "SELECT username FROM $table WHERE username = '$username'";
+            $resultCheckExistence = mysqli_query($db, $sqlCheckExistence);
+            $count = mysqli_num_rows($resultCheckExistence);
+
+            if ($count > 0) {
+                echo 'UsernameExists';
+                return;
+            }
+        }
+
+        if($count > 0) {
+            echo 'Exists';
+        } else { 
+            if (isset($_FILES['image']) && !empty($_FILES['image']['name'])) {
+                $image = $_FILES['image']['name'];
+                $imagePath = 'profile/' . $image;
+                $tmp_name = $_FILES['image']['tmp_name'];
+                move_uploaded_file($tmp_name, $imagePath);
+            } else {
+                $image = $_POST['image']; 
+            }
+            $sql = "UPDATE $table SET username = '$username', first = '$first', last = '$last'";
+            if (!empty($imagePath)) {
+                $sql .= ", image = '$image'";
+            }
+    
+            $sql .= " WHERE uid = '$uid'";
+            if ($conn->query($sql) === TRUE) { 
+                echo "success, ${count}";
+            } else {
+                echo "error";
+            }
+        }
+
+        $conn->close();
+        return;
+    }
 
     if('UPDATE' == $action){
         $uid = $_POST['uid'];
