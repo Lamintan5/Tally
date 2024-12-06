@@ -11,6 +11,20 @@
 
    
 
+    if('UPDATE_PASS' == $action){
+        $uid = $_POST['uid'];
+        $password = md5($_POST['password']); 
+       
+        $sql = "UPDATE $table SET  password = '$password' WHERE uid = '$uid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "error";
+        }
+        $conn->close();
+        return;
+    }
+
 
     if ('UPDATE_TOKEN' == $action) {
         $uid = $_POST['uid'];
