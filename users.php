@@ -10,6 +10,21 @@
     $conn = new mysqli($servername, $username, $password, $dbname);
 
    
+
+    if('UPDATE_PHONE' == $action){
+        $uid = $_POST['uid'];
+        $phone = $_POST['phone'];   
+
+        $sql = "UPDATE $table SET phone = '$phone' WHERE uid = '$uid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "error";
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE_EMAIL' == $action){
         $uid = $_POST['uid'];
         $email = $_POST['email'];   
