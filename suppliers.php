@@ -1,5 +1,35 @@
 <?php
     
+    if('ADD' == $action){
+        $sid = $_POST['sid'];
+        $eid = $_POST['eid'];
+        $pid = $_POST['pid'];
+        $name = $_POST['name'];
+        $category = $_POST['category'];
+        $company = $_POST['company'];
+        $phone = $_POST['phone'];
+        $email = $_POST['email'];
+
+        $sql = "SELECT sid FROM $table WHERE BINARY sid = '".$sid."'";
+        $result = mysqli_query($db,$sql);
+        $count = mysqli_num_rows($result);
+
+        if($count == 0){
+            $insert = "INSERT INTO $table(sid,eid,pid,name,category,company,phone,email,checked) 
+            VALUES ('".$sid."','".$eid."','".$pid."','".$name."','".$category."','".$company."','".$phone."','".$email."','true')";
+            $query = mysqli_query($db,$insert);
+            if($query){
+                echo 'Success';
+            } else {
+                echo 'Failed';
+            }
+        } else {
+            echo 'Exists';
+        }
+
+        
+    }
+
     if('GET' == $action){
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
