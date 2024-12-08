@@ -14,4 +14,17 @@
     }
 
    
+
+    if('DELETE' == $action){
+        $saleid = $_POST['saleid'];
+        $productid = $_POST['productid'];
+        $sql = "DELETE FROM $table WHERE saleid = '$saleid' AND productid = '$productid'";
+        if ($conn->query($sql) === TRUE) {
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
 ?>
