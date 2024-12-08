@@ -15,6 +15,19 @@
 
    
 
+    if('UPDATE_SALE_AMOUNT' == $action){
+        $saleid = $_POST['saleid'];
+        $amount = $_POST['amount'];
+        $sql = "UPDATE $table SET  amount = '$amount' WHERE saleid = '$saleid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE_ONE_QUANTITY' == $action){
         $sid = $_POST['sid'];
         $quantity = $_POST['quantity'];
