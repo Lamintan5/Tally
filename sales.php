@@ -14,6 +14,18 @@
     }
 
    
+    if('UPDATE_PAID' == $action){
+        $saleid = $_POST['saleid'];
+        $paid = $_POST['paid'];
+        $sql = "UPDATE $table SET  paid = '$paid' WHERE saleid = '$saleid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
 
     if('UPDATE_SALE_AMOUNT' == $action){
         $saleid = $_POST['saleid'];
