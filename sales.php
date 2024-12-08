@@ -14,6 +14,20 @@
     }
 
    
+    if('GET_ONE' == $action){
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $prcid = $_POST['prcid'];
+        $query = "SELECT * FROM $table WHERE prcid = '".$prcid."'";
+        $result = $db->query($query);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    }
+
     if('GET_PURCHASE' == $action){
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
