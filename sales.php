@@ -14,6 +14,40 @@
     }
 
    
+    if('UPDATE_SPRICE' == $action){
+        $sid = $_POST['sid'];
+        $sprice = $_POST['sprice'];
+        $sql = "UPDATE $table SET  sprice = '$sprice' WHERE sid = '$sid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
+
+
+    if('UPDATE_AMOUNT' == $action){
+        $saleid = $_POST['saleid'];
+        $customer = $_POST['customer'];
+        $phone = $_POST['phone'];
+        $amount = $_POST['amount'];
+        $paid = $_POST['paid'];
+        $method = $_POST['method'];
+        $due = $_POST['due'];
+        $date = $_POST['date'];
+        
+        $sql = "UPDATE $table SET customer = '$customer', phone = '$phone', amount = '$amount', paid = '$paid', method = '$method', due = '$due', date = '$date' WHERE saleid = '$saleid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
 
     if('UPDATE' == $action){
         $sid = $_POST['sid'];
