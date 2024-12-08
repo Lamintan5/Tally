@@ -15,6 +15,22 @@
 
    
 
+
+    if('UPDATE_QUANTITY' == $action){
+        $saleid = $_POST['saleid'];
+        $productid = $_POST['productid'];
+        $quantity = $_POST['quantity'];
+        $amount = $_POST['amount'];
+        $sql = "UPDATE $table SET quantity = '$quantity', amount = '$amount'  WHERE saleid = '$saleid' AND productid = '$productid' ";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('REMOVE_USER' == $action){
         $eid = $_POST['eid'];
         $pid = $_POST['pid'];
