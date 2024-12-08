@@ -14,6 +14,49 @@
     }
 
    
+    if('DELETE_SALEID' == $action){
+        $saleid = $_POST['saleid'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE saleid = '$saleid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "DELETE FROM $table WHERE saleid = '$saleid'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+
+        $conn->close();
+        return;
+    }
+
+    if('DELETE_SID' == $action){
+        $sid = $_POST['sid'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE sid = '$sid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "DELETE FROM $table WHERE sid = '$sid'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+
+        $conn->close();
+        return;
+    }
 
     if('DELETE' == $action){
         $saleid = $_POST['saleid'];
