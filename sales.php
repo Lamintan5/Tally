@@ -15,6 +15,37 @@
 
    
 
+    if('UPDATE' == $action){
+        $sid = $_POST['sid'];
+        $customer = $_POST['customer'];
+        $phone = $_POST['phone'];
+        $amount = $_POST['amount'];
+        $paid = $_POST['paid'];
+        $method = $_POST['method'];
+        $due = $_POST['due'];
+        $date = $_POST['date'];
+        $quantity = $_POST['quantity'];
+        $bprice = $_POST['bprice'];
+        $sprice = $_POST['sprice'];
+    
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE sid = '$sid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "UPDATE $table SET customer = '$customer', phone = '$phone', amount = '$amount', paid = '$paid', quantity = '$quantity', bprice = '$bprice', sprice = '$sprice', method = '$method', due = '$due', date = '$date' WHERE sid = '$sid'";
+            if ($conn->query($sql) === TRUE) { 
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+        $conn->close();
+        return;
+    }
+
 
     if('UPDATE_QUANTITY' == $action){
         $saleid = $_POST['saleid'];
