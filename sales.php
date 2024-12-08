@@ -14,6 +14,20 @@
     }
 
    
+
+    if('UPDATE_ONE_QUANTITY' == $action){
+        $sid = $_POST['sid'];
+        $quantity = $_POST['quantity'];
+        $sql = "UPDATE $table SET  quantity = '$quantity' WHERE sid = '$sid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE_SPRICE' == $action){
         $sid = $_POST['sid'];
         $sprice = $_POST['sprice'];
