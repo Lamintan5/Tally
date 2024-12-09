@@ -1,5 +1,10 @@
 
 
+const express = require("express");
+const router = express.Router();
+const multer = require("multer");
+
+
 router.post("/otp-login", otpController.otpLogin);
 router.post("/otp-verify", otpController.verifyOTP);
 
