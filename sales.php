@@ -14,6 +14,21 @@
     }
 
   
+
+    if('GET_BY_SID' == $action){
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $sid = $_POST['sid'];
+        $query = "SELECT * FROM $table WHERE sid = '".$sid."'";
+        $result = $db->query($query);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    }
+
     if('GET_PRODUCTID' == $action){
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
