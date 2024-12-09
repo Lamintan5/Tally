@@ -1,4 +1,5 @@
-
+const otpController = require("./contollers/otp.controller");
+const pushNotificationController = require("./contollers/push-notification.controller");
 
 const express = require("express");
 const router = express.Router();
