@@ -1,5 +1,8 @@
 
 
+router.post("/otp-login", otpController.otpLogin);
+router.post("/otp-verify", otpController.verifyOTP);
+
 router.get("/SendNotification", pushNotificationController.SendNotification);
 router.post("/SendNotificationToDevice", pushNotificationController.SendNotificationToDevice);
 
