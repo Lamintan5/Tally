@@ -14,6 +14,19 @@
     }
 
   
+    if('GET_BY_SALEID' == $action){
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $saleid = $_POST['saleid'];
+        $query = "SELECT * FROM $table WHERE saleid = '".$saleid."'";
+        $result = $db->query($query);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    }
 
     if('GET_BY_SID' == $action){
         if ($db->connect_errno) {
