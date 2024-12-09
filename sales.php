@@ -15,6 +15,21 @@
 
   
 
+    if('GET_BY_USER' == $action){
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $pid = $_POST['pid'];  
+        $query = "SELECT * FROM $table WHERE FIND_IN_SET('" . $pid . "', pid)";
+        $result = $db->query($query);
+        
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    }
+
     
     if('GET_ALL_BY_ADMIN' == $action){
         if ($db->connect_errno) {
