@@ -13,7 +13,33 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-  
+    if('ADD' == $action){
+        $saleid = $_POST['saleid'];
+        $sid = $_POST['sid'];
+        $iid = $_POST['iid'];
+        $eid = $_POST['eid'];
+        $pid = $_POST['pid'];
+        $sellerid = $_POST['sellerid'];
+        $productid = $_POST['productid'];       
+        $customer = $_POST['customer'];
+        $phone = $_POST['phone'];
+        $bprice = $_POST['bprice'];
+        $sprice = $_POST['sprice'];
+        $amount = $_POST['amount'];
+        $paid = $_POST['paid'];
+        $method = $_POST['method'];
+        $quantity = $_POST['quantity'];
+        $date = $_POST['date'];
+        $due = $_POST['due'];
+        $insert = "INSERT INTO $table(saleid,sid,iid,eid,pid,sellerid,productid,customer,phone,bprice,sprice,amount,paid,method,quantity,date,due,checked) 
+        VALUES ('".$saleid."','".$sid."','".$iid."','".$eid."','".$pid."','".$sellerid."','".$productid."','".$customer."','".$phone."','".$bprice."','".$sprice."','".$amount."','".$paid."','".$method."','".$quantity."','".$date."','".$due."','true')";
+        $query = mysqli_query($db,$insert);
+        if($query){
+            echo 'Success';
+        } else {
+            echo 'Failed';
+        }
+    }
 
     if('GET_ALL' == $action){
         if ($db->connect_errno) {
