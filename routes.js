@@ -1,5 +1,8 @@
 
 
+router.get("/SendNotification", pushNotificationController.SendNotification);
+router.post("/SendNotificationToDevice", pushNotificationController.SendNotificationToDevice);
+
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, "./uploads");
