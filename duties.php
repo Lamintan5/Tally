@@ -1,5 +1,30 @@
 <?php
    
+    if('ADD' == $action){
+        $did = $_POST['did'];
+        $eid = $_POST['eid'];
+        $pid = $_POST['pid'];
+        $duties = $_POST['duties'];
+        $checked = $_POST['checked'];
+
+        $sql = "SELECT eid, pid FROM $table WHERE BINARY eid = '".$eid."' AND pid = '".$pid."'";
+        $result = mysqli_query($db,$sql);
+        $count = mysqli_num_rows($result);
+
+        if($count == 1){
+            echo 'Exists';
+        } else {
+            $insert = "INSERT INTO $table(did,eid,pid,duties,checked) 
+            VALUES ('".$did."','".$eid."','".$pid."','".$duties."','true')";
+            $query = mysqli_query($db,$insert);
+            if($query){
+                echo 'Success';
+            } else {
+                echo 'Failed';
+            }
+        }         
+    }
+
     if('GET_CURRENT' == $action){
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
