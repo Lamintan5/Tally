@@ -1,5 +1,10 @@
 <?php
    
+
+    if ($conn->connect_error) {
+        die("Connection failed: " . $conn->connect_error);
+    }
+
     if('ADD' == $action){
         $did = $_POST['did'];
         $eid = $_POST['eid'];
