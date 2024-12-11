@@ -104,6 +104,19 @@
     }
 
    
+    if('UPDATE_PAID' == $action){
+        $purchaseid = $_POST['purchaseid'];
+        $paid = $_POST['paid'];
+        $sql = "UPDATE $table SET paid = '$paid' WHERE purchaseid = '$purchaseid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE_QUANTITY' == $action){
         $purchaseid = $_POST['purchaseid'];
         $productid = $_POST['productid'];
