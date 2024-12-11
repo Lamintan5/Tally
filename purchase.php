@@ -104,6 +104,21 @@
     }
 
    
+    if('UPDATE_QUANTITY' == $action){
+        $purchaseid = $_POST['purchaseid'];
+        $productid = $_POST['productid'];
+        $quantity = $_POST['quantity'];
+        $amount = $_POST['amount'];
+        $sql = "UPDATE $table SET quantity = '$quantity', amount = '$amount'  WHERE purchaseid = '$purchaseid' AND productid = '$productid' ";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('DELETE_PRCHID' == $action){
         $purchaseid = $_POST['purchaseid'];
 
