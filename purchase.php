@@ -104,4 +104,16 @@
     }
 
    
+    if('DELETE' == $action){
+        $purchaseid = $_POST['purchaseid'];
+        $productid = $_POST['productid'];
+        $sql = "DELETE FROM $table WHERE purchaseid = '$purchaseid' AND productid = '$productid'";
+        if ($conn->query($sql) === TRUE) {
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
 ?>
