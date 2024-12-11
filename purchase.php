@@ -104,6 +104,28 @@
     }
 
    
+    if('DELETE_PRCID' == $action){
+        $prcid = $_POST['prcid'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE prcid = '$prcid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "DELETE FROM $table WHERE prcid = '$prcid'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+
+        $conn->close();
+        return;
+    }
+
     if('DELETE_EID' == $action){
         $eid = $_POST['eid'];
         $sql = "DELETE FROM $table WHERE eid = '$eid'";
