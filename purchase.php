@@ -104,6 +104,19 @@
     }
 
    
+    if('UPDATE_ONE_QUANTITY' == $action){
+        $prcid = $_POST['prcid'];
+        $quantity = $_POST['quantity'];
+        $sql = "UPDATE $table SET  quantity = '$quantity' WHERE prcid = '$prcid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE_AMOUNT' == $action){
         $purchaseid = $_POST['purchaseid'];
         $amount = $_POST['amount'];
