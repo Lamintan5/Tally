@@ -104,6 +104,28 @@
     }
 
    
+    if('DELETE_PRCHID' == $action){
+        $purchaseid = $_POST['purchaseid'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE purchaseid = '$purchaseid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "DELETE FROM $table WHERE purchaseid = '$purchaseid'";
+            if ($conn->query($sql) === TRUE) {
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+
+        $conn->close();
+        return;
+    }
+
     if('DELETE_PRCID' == $action){
         $prcid = $_POST['prcid'];
 
