@@ -104,6 +104,34 @@
     }
 
    
+    if('UPDATE' == $action){
+        $prcid = $_POST['prcid'];
+        $bprice = $_POST['bprice'];
+        $amount = $_POST['amount'];
+        $paid = $_POST['paid'];
+        $quantity = $_POST['quantity'];
+        $type = $_POST['type'];
+        $date = $_POST['date'];
+        $due = $_POST['due'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE prcid = '$prcid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "UPDATE $table SET  bprice = '$bprice', amount = '$amount', paid = '$paid', quantity = '$quantity',  type = '$type', date = '$date', due = '$due' WHERE prcid = '$prcid'";
+            if ($conn->query($sql) === TRUE) { 
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE_ONE_QUANTITY' == $action){
         $prcid = $_POST['prcid'];
         $quantity = $_POST['quantity'];
