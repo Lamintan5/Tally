@@ -104,6 +104,32 @@
     }
 
    
+    if('UPDATE_AMOUNT' == $action){
+        $purchaseid = $_POST['purchaseid'];
+        $amount = $_POST['amount'];
+        $paid = $_POST['paid'];
+        $due = $_POST['due'];
+        $type = $_POST['type'];
+        $date = $_POST['date'];
+
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE purchaseid = '$purchaseid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "UPDATE $table SET amount = '$amount', paid = '$paid', due = '$due', type = '$type', date = '$date'  WHERE purchaseid = '$purchaseid'";
+            if ($conn->query($sql) === TRUE) { 
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE_ALL_AMOUNT' == $action){
         $purchaseid = $_POST['purchaseid'];
         $amount = $_POST['amount'];
