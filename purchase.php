@@ -1,5 +1,10 @@
 <?php
-    
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "tally";
+    $table = "purchases";
+
 
    
 
