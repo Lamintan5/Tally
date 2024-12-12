@@ -88,7 +88,20 @@
         echo json_encode($data);
     }
 
-   
+    if('GET_PRODUCTID' == $action){
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $purchaseid = $_POST['purchaseid'];
+        $productid = $_POST['productid'];
+        $query = "SELECT * FROM $table WHERE purchaseid = '".$purchaseid."' AND productid = '".$productid."'";
+        $result = $db->query($query);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    }
 
     if('GET_BY_PRCID' == $action){
         if ($db->connect_errno) {
