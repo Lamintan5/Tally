@@ -5,6 +5,10 @@
     $dbname = "tally";
     $table = "purchases";
 
+    $action = $_POST['action'];
+    $db = mysqli_connect('localhost','root','','tally');
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
 
    
 
