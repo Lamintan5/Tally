@@ -13,6 +13,39 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
+    if('ADD' == $action){
+        $purchaseid = $_POST['purchaseid'];
+        $productid = $_POST['productid'];
+        $prcid = $_POST['prcid'];
+        $eid = $_POST['eid'];
+        $pid = $_POST['pid'];
+        $purchaser = $_POST['purchaser'];
+        $bprice = $_POST['bprice'];
+        $amount = $_POST['amount'];
+        $paid = $_POST['paid'];
+        $quantity = $_POST['quantity'];
+        $type = $_POST['type'];
+        $date = $_POST['date'];
+        $due = $_POST['due'];
+
+        $sql = "SELECT prcid FROM $table WHERE  prcid = '".$prcid."'";
+        $result = mysqli_query($db,$sql);
+        $count = mysqli_num_rows($result);
+
+        if($count == 1){
+            echo 'Exists';
+        }else {
+            $insert = "INSERT INTO $table(purchaseid,productid,prcid,eid,pid,purchaser,bprice,amount,paid,quantity,type,date,due,checked) 
+            VALUES ('".$purchaseid."','".$productid."','".$prcid."','".$eid."','".$pid."','".$purchaser."','".$bprice."','".$amount."','".$paid."','".$quantity."','".$type."','".$date."','".$due."','true')";
+            $query = mysqli_query($db,$insert);
+            if($query){
+                echo 'Success';
+            } else {
+                echo 'Failed';
+            }
+        }
+    }
+
 
    
 
