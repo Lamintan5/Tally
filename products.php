@@ -1,5 +1,37 @@
 <?php
     
+
+    if('ADD' == $action){
+        $prid = $_POST['prid'];
+        $eid = $_POST['eid'];
+        $pid = $_POST['pid'];
+        $name = $_POST['name'];
+        $category = $_POST['category'];
+        $quantity = $_POST['quantity'];
+        $volume = $_POST['volume'];
+        $supplier = $_POST['supplier'];
+        $buying = $_POST['buying'];
+        $selling = $_POST['selling'];
+        $type = $_POST['type'];
+
+        $sql = "SELECT prid FROM $table WHERE BINARY prid = '".$prid."'";
+        $result = mysqli_query($db,$sql);
+        $count = mysqli_num_rows($result);
+
+        if($count == 0){
+            $insert = "INSERT INTO $table(prid,eid,pid,name,category,quantity,volume,supplier,buying,selling,type, checked) 
+            VALUES ('".$prid."','".$eid."','".$pid."','".$name."','".$category."','".$quantity."','".$volume."','".$supplier."','".$buying."','".$selling."','".$type."','true')";
+            $query = mysqli_query($db,$insert);
+            if($query){
+                echo 'Success';
+            } else {
+                echo 'Failed';
+            }
+        } else {
+            echo 'Exists';
+        }
+    }
+
     if('GET_MY' == $action){
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
