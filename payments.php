@@ -1,6 +1,18 @@
 <?php
     
 
+    if('DELETE_EID' == $action){
+        $eid = $_POST['eid'];
+        $sql = "DELETE FROM $table WHERE eid = '$eid'";
+        if ($conn->query($sql) === TRUE) {
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('DELETE_SALEID' == $action){
         $saleid = $_POST['saleid'];
         $sql = "DELETE FROM $table WHERE saleid = '$saleid'";
