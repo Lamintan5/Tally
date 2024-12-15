@@ -1,6 +1,19 @@
 <?php
     
 
+    if('REMOVE_USER' == $action){
+        $eid = $_POST['eid'];
+        $pid = $_POST['pid'];
+        $sql = "UPDATE $table SET pid = '$pid' WHERE eid = '$eid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE' == $action){
         $prid = $_POST['prid'];
         $name = $_POST['name'];
