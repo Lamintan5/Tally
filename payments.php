@@ -1,6 +1,26 @@
 <?php
     
 
+    if ('GET_CURRENT' == $action) {
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $pid = $db->real_escape_string($_POST['pid']); 
+        $stmt = $db->prepare("SELECT * FROM $table WHERE FIND_IN_SET(?, pid)");
+        $stmt->bind_param("s", $pid);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+    
+        $stmt->close();
+    
+        echo json_encode($data);
+    }
+    
+
     if('GET_ALL' == $action){
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
