@@ -1,6 +1,21 @@
 <?php
     
 
+    if('UPDATE_SALE_PAID' == $action){
+        $saleid = $_POST['saleid'];
+        $paid = $_POST['paid'];
+        $type = $_POST['type'];
+        $method = $_POST['method'];
+        $sql = "UPDATE $table SET paid = '$paid', type = '$type', method = '$method' WHERE saleid = '$saleid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('DELETE_EID' == $action){
         $eid = $_POST['eid'];
         $sql = "DELETE FROM $table WHERE eid = '$eid'";
