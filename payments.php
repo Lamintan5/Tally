@@ -1,6 +1,21 @@
 <?php
     
 
+    if('UPDATE_SALE_AMOUNT' == $action){
+        $saleid = $_POST['saleid'];
+        $amount = $_POST['amount'];
+        $type = $_POST['type'];
+        $items = $_POST['items'];
+        $sql = "UPDATE $table SET amount = '$amount', items = '$items', type = '$type' WHERE saleid = '$saleid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE_SALE_PAID' == $action){
         $saleid = $_POST['saleid'];
         $paid = $_POST['paid'];
