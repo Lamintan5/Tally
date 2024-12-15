@@ -1,5 +1,9 @@
 <?php
-    
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "tally";
+    $table = "payments";
 
     $action = $_POST['action'];
     $db = mysqli_connect('localhost','root','','tally');
