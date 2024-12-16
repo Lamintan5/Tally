@@ -1,5 +1,41 @@
 <?php
    
+
+    if ('UPDATE_SEEN' == $action) {
+        $nid = $_POST['nid'];
+        $uid = $_POST['uid'];
+    
+        $sql = "SELECT `seen` FROM $table WHERE nid = '$nid'";
+        $result = $conn->query($sql);
+        
+        if ($result && $result->num_rows > 0) {
+            $row = $result->fetch_assoc();
+            $seenField = $row['seen'];
+    
+            if (empty($seenField)) {
+                $newSeenField = $uid;
+            } else {
+                $uidsArray = explode(',', $seenField);
+                if (!in_array($uid, $uidsArray)) {
+                    $newSeenField = $seenField . ',' . $uid;
+                } else {
+                    $newSeenField = $seenField;
+                }
+            }
+
+            $updateSql = "UPDATE $table SET `seen` = '$newSeenField' WHERE nid = '$nid'";
+            if ($conn->query($updateSql) === TRUE) {
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        } else {
+            echo "Does not exist";
+        }
+    
+        $conn->close();
+        return;
+    }
     
     if ('UPDATE_DELETE' == $action) {
         $nid = $_POST['nid'];
