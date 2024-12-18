@@ -13,7 +13,38 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
-    
+    if('ADD' == $action){
+        $nid = $_POST['nid'];
+        $sid = $_POST['sid'];
+        $rid = $_POST['rid'];
+        $eid = $_POST['eid'];
+        $pid = $_POST['pid'];
+        $text = $_POST['text'];
+        $message = $_POST['message'];
+        $seen = $_POST['seen'];
+        $actions = $_POST['actions'];
+        $type = $_POST['type'];
+
+        $sql = "SELECT sid, rid, eid, text, actions, type FROM $table
+        WHERE sid = '".$sid."' AND rid = '".$rid."' AND eid = '".$eid."' AND text = '".$text."' AND actions = '".$actions."' AND type = '".$type."'";
+        $result = mysqli_query($db,$sql);
+        $count = mysqli_num_rows($result);
+
+        if($count > 0){
+            echo 'Exists';
+        } else {
+            $insert = "INSERT INTO $table(nid,sid,rid,eid,pid,text,message,seen,actions,checked,type) 
+            VALUES ('".$nid."','".$sid."','".$rid."','".$eid."','".$pid."','".$text."','".$message."','".$seen."','".$actions."','true','".$type."')";
+            $query = mysqli_query($db,$insert);
+            if($query){
+                echo 'Success';
+            } else {
+                echo 'Failed';
+            }
+        }         
+    }
+
+   
     
     if('GET_CURRENT' == $action){
         if ($db->connect_errno) {
