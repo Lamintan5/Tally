@@ -1,5 +1,11 @@
 <?php
-   
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "tally";
+    $table = "notifications";
+
+    
     
     if('GET_CURRENT' == $action){
         if ($db->connect_errno) {
