@@ -1,5 +1,19 @@
 <?php
     
+    if('UPDATE' == $action){
+        $iid = $_POST['iid'];
+        $quantity = $_POST['quantity'];
+        $type = $_POST['type'];
+        $sql = "UPDATE $table SET quantity = '$quantity', type = '$type' WHERE iid = '$iid'";
+        if ($conn->query($sql) === TRUE) { 
+            echo "success";
+        } else {
+            echo "failed";
+        }
+        $conn->close();
+        return;
+    }
+
     if('UPDATE_QUANTITY' == $action){
         $productid = $_POST['productid'];
         $quantity = $_POST['quantity'];
