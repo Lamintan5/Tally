@@ -1,6 +1,32 @@
 <?php
     
 
+    if('ADD' == $action){
+        $iid = $_POST['iid'];
+        $eid = $_POST['eid'];
+        $pid = $_POST['pid'];
+        $productId = $_POST['productId'];
+        $quantity = $_POST['quantity'];
+        $type = $_POST['type'];
+
+        $sql = "SELECT productId FROM $table WHERE  productId = '".$productId."'";
+        $result = mysqli_query($db,$sql);
+        $count = mysqli_num_rows($result);
+
+        if($count == 1){
+            echo 'Exists';
+        }else {
+            $insert = "INSERT INTO $table(iid,eid,pid,productId,quantity,type,checked) 
+            VALUES ('".$iid."','".$eid."','".$pid."','".$productId."','".$quantity."','".$type."','true')";
+            $query = mysqli_query($db,$insert);
+            if($query){
+                echo 'Success';
+            } else {
+                echo 'Failed';
+            }
+        }
+    }
+
     if('GET_MY' == $action){
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
