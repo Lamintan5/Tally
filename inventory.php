@@ -1,5 +1,28 @@
 <?php
     
+    if('UPDATE_QUANTITY' == $action){
+        $productid = $_POST['productid'];
+        $quantity = $_POST['quantity'];
+        
+        $checkSql = "SELECT COUNT(*) as count FROM $table WHERE productid = '$productid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            echo "Does not exist";
+        } else {
+            $sql = "UPDATE $table SET quantity = '$quantity' WHERE productid = '$productid'";
+            if ($conn->query($sql) === TRUE) { 
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+        
+        $conn->close();
+        return;
+    }
+
     if ('UPDATE_SUB_QNTY' == $action) {
         $productid = $_POST['productid'];
         $quantity = $_POST['quantity'];
