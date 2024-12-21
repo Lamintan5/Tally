@@ -1,5 +1,20 @@
 <?php
     
+
+    if('GET_BY_PRODUCT' == $action){
+        if ($db->connect_errno) {
+            die("Failed to connect to MySQL: " . $db->connect_error);
+        }
+        $productid = $_POST['productid'];
+        $query = "SELECT * FROM $table WHERE productid = '".$productid."'";
+        $result = $db->query($query);
+        $data = [];
+        while ($row = $result->fetch_assoc()) {
+            $data[] = $row;
+        }
+        echo json_encode($data);
+    }
+    
     if('GET_CURRENT' == $action){
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
