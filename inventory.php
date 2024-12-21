@@ -1,5 +1,32 @@
 <?php
     
+    if ('UPDATE_ADD_QNTY' == $action) {
+        $productid = $_POST['productid'];
+        $quantity = $_POST['quantity'];
+        
+        $checkSql = "SELECT quantity FROM $table WHERE productid = '$productid'";
+        $result = $conn->query($checkSql);
+        $row = $result->fetch_assoc();
+    
+        if ($result->num_rows == 0) {
+            echo "Does not exist";
+        } else {
+            $currentQuantity = $row['quantity'];
+            $newQuantity = $currentQuantity + $quantity;
+            
+            // Update the quantity with the new value
+            $sql = "UPDATE $table SET quantity = '$newQuantity' WHERE productid = '$productid'";
+            if ($conn->query($sql) === TRUE) { 
+                echo "success";
+            } else {
+                echo "failed";
+            }
+        }
+        
+        $conn->close();
+        return;
+    }    
+    
     if ('UPDATE_DIFF_QNTY' == $action) {
         $productid = $_POST['productid'];
         $quantity = $_POST['quantity'];
