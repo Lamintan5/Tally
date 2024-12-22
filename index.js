@@ -81,6 +81,56 @@ io.on("connection", (socket) => {
         });
     });
 
+    socket.on("group", (msg) => {
+    console.log("Received group message:", msg);
+
+    let targetIds = msg.targetId || [];
+    let messageText = msg.message;
+    let title = msg.title;
+    let recipientToken = msg.token;
+    let profile = msg.profile;
+    let image = msg.path;
+    let username = msg.username;
+
+        targetIds.forEach(targetId => {
+            if (clients[targetId]) {
+                clients[targetId].emit("group", msg);
+                console.log(`Sent group message to user ${targetId}`);
+            } else {
+                console.log(`User ${targetId} not found`);
+            }
+        });
+        var message = {
+            app_id: ONE_SIGNAL_CONFIG.APP_ID,
+            contents: {en : `${username} : ${messageText}`,},
+            headings: {en: title,},
+            included_segments: ["Grouped Users"],
+            buttons: [
+                { id: "1", text: "Reply", action: { url: `Tally://message?userId=123` } },
+                { id: "2", text: "Ignore",},
+            ],
+            include_player_ids: recipientToken,
+            content_available: true,
+            small_icon: "ic_app_log",
+            large_icon: profile,
+            big_picture: image,
+            data: {
+                PushTitle: "STUDIO5IVE"
+            },
+            ios_sound: "default", 
+            android_sound: "default",
+            priority: 10,
+        };
+        pushNotificationService.SendNotification(message, (error, results) => {
+            if(error){
+                return console.log(`Error`)
+            } else {
+                console.log(`Success`)
+            }
+            
+        });
+    });
+    
 
     
 });
