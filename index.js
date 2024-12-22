@@ -177,7 +177,39 @@ io.on("connection", (socket) => {
         });
     });
 
+    socket.on("cancel-notification", (msg) => {
+        console.log("Cancel notification request received:", msg);
+        let notificationId = msg.mid;
 
-    
+        pushNotificationService.CancelNotification(notificationId, (error, results) => {
+
+            if (error) {
+                console.log(`Error canceling notification: ${error.message}, ${msg.mid}`);
+            } else {
+                console.log(`Notification canceled successfully`, results);
+             
+                socket.emit("notification-canceled", { mid: notificationId, status: "success" });
+            }
+        });
+    });
+
+    socket.on("disconnect", (_) => {
+        console.log("Disconnected. Reconnecting :", new Date().toLocaleTimeString().substring(0, 5));
+        
+    });
+
+    socket.on("connect_error", (err) => {
+        console.log("Connection error: ", err);
+
+    });
+
+    console.log(`${socket.connected}: ${new Date().toLocaleTimeString().substring(0, 5)}`);
 });
 
+app.route("/check").get((req, res) => {
+    return res.json("Your app is working fine");
+});
+
+server.listen(port, "0.0.0.0", () => {
+    console.log("server started");
+});
