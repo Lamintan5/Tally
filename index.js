@@ -21,6 +21,12 @@ io.on("connection", (socket) => {
     console.log("connected");
     console.log(socket.id, "has joined");
 
+    socket.on("signin", (id) => {
+        console.log(`User ${id} has signed in`);
+        clients[id] = socket; // CHECK IF SIGNING IN WITH DIRRENT DEVICES WITH THE SAME ID WILL AND THE SAME IT MORE THAN ONCE
+        console.log("Connected clients:", clients);
+    });
+
 
     
 });
