@@ -27,6 +27,12 @@ io.on("connection", (socket) => {
         console.log("Connected clients:", clients);
     });
 
+    socket.on("signout", (id) => {
+        console.log(`User ${id} has signed out`);
+        delete clients[id];  // PROPRLY REMOVE CLIENT
+        console.log("Connected clients:", clients);
+    });
+    
 
     
 });
