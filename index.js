@@ -15,4 +15,7 @@ app.use("/api", routes);
 app.use("/uploads", express.static("uploads"));
 
 
+const clients = {};
+
+
 
