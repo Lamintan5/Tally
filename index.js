@@ -8,4 +8,11 @@ const server = http.createServer(app);
 const io = require("socket.io")(server);
 
 
+// Middleware
+app.use(express.json());
+const routes = require("./routes");
+app.use("/api", routes);
+app.use("/uploads", express.static("uploads"));
+
+
 
