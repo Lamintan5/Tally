@@ -133,7 +133,7 @@ io.on("connection", (socket) => {
     
     
 
-    
+    console.log(`${socket.connected}: ${new Date().toLocaleTimeString().substring(0, 5)}`);
 });
 
 app.route("/check").get((req, res) => {
