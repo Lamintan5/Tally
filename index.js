@@ -133,6 +133,11 @@ io.on("connection", (socket) => {
     
     
 
+    socket.on("connect_error", (err) => {
+        console.log("Connection error: ", err);
+
+    });
+
     console.log(`${socket.connected}: ${new Date().toLocaleTimeString().substring(0, 5)}`);
 });
 
