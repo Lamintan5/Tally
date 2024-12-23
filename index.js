@@ -133,6 +133,11 @@ io.on("connection", (socket) => {
     
     
 
+    socket.on("disconnect", (_) => {
+        console.log("Disconnected. Reconnecting :", new Date().toLocaleTimeString().substring(0, 5));
+        
+    });
+
     socket.on("connect_error", (err) => {
         console.log("Connection error: ", err);
 
