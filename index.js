@@ -131,85 +131,9 @@ io.on("connection", (socket) => {
         });
     });
     
-    socket.on("notif", (msg)=>{
-        console.log(msg);
-        let targetIds = msg.pid || [];
-        let messageText = msg.message;
-        let title = msg.title;
-        let recipientToken = msg.token;
-        let profile = msg.profile;
+    
 
-        targetIds.forEach(pid => {
-            if (clients[pid]) {
-                clients[pid].emit("notif", msg);
-                console.log(`Sent Notification to user ${pid}`);
-            } else {
-                console.log(`User ${pid} not found`);
-            }
-        });
-        var message = {
-            app_id: ONE_SIGNAL_CONFIG.APP_ID,
-            contents: {en : messageText,},
-            headings: {en: title,},
-            included_segments: ["Subscribed Users"],
-            
-            include_player_ids: recipientToken,
-            content_available: true,
-            small_icon: "ic_app_log",
-            groupSummaryIcon: "ic_app_log",
-           
-           
-            data: {
-                PushTitle: "STUDIO5IVE",
-                group: "123456",
-            },
-            ios_sound: "default", 
-            android_sound: "default",
-            priority: 10,
-        };
-        pushNotificationService.SendNotification(message, (error, results) => {
-            if(error){
-                console.log(`Error`);
-            } else {
-                console.log(`Success`)
-            }
-            
-        });
-    });
-
-    socket.on("cancel-notification", (msg) => {
-        console.log("Cancel notification request received:", msg);
-        let notificationId = msg.mid;
-
-        pushNotificationService.CancelNotification(notificationId, (error, results) => {
-
-            if (error) {
-                console.log(`Error canceling notification: ${error.message}, ${msg.mid}`);
-            } else {
-                console.log(`Notification canceled successfully`, results);
-             
-                socket.emit("notification-canceled", { mid: notificationId, status: "success" });
-            }
-        });
-    });
-
-    socket.on("disconnect", (_) => {
-        console.log("Disconnected. Reconnecting :", new Date().toLocaleTimeString().substring(0, 5));
-        
-    });
-
-    socket.on("connect_error", (err) => {
-        console.log("Connection error: ", err);
-
-    });
-
-    console.log(`${socket.connected}: ${new Date().toLocaleTimeString().substring(0, 5)}`);
+    
 });
 
-app.route("/check").get((req, res) => {
-    return res.json("Your app is working fine");
-});
 
-server.listen(port, "0.0.0.0", () => {
-    console.log("server started");
-});
