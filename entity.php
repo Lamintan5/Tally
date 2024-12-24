@@ -76,7 +76,6 @@
         echo json_encode($data);
     }
 
-   
     if('GET_ALL' == $action){
         if ($db->connect_errno) {
             die("Failed to connect to MySQL: " . $db->connect_error);
@@ -187,7 +186,6 @@
         $conn->close();
         return;
     }
-    
 
     if ('REMOVE_ADMIN' == $action) {
         $eid = $_POST['eid'];
@@ -228,7 +226,6 @@
         $conn->close();
         return;
     }
-
 
     if('DELETE' == $action){
         $eid = $_POST['eid'];
