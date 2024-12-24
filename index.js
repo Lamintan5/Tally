@@ -23,13 +23,13 @@ io.on("connection", (socket) => {
 
     socket.on("signin", (id) => {
         console.log(`User ${id} has signed in`);
-        clients[id] = socket; // CHECK IF SIGNING IN WITH DIRRENT DEVICES WITH THE SAME ID WILL AND THE SAME IT MORE THAN ONCE
+        clients[id] = socket; 
         console.log("Connected clients:", clients);
     });
 
     socket.on("signout", (id) => {
         console.log(`User ${id} has signed out`);
-        delete clients[id];  // PROPRLY REMOVE CLIENT
+        delete clients[id]; 
         console.log("Connected clients:", clients);
     });
     
