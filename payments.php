@@ -246,8 +246,8 @@
     
 
     if('DELETE' == $action){
-        $prid = $_POST['prid'];
-        $sql = "DELETE FROM $table WHERE prid = '$prid'";
+        $payid = $_POST['payid'];
+        $sql = "DELETE FROM $table WHERE payid = '$payid'";
         if ($conn->query($sql) === TRUE) {
             echo "success";
         } else {
